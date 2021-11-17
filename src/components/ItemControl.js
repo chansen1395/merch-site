@@ -1,6 +1,7 @@
 import React from 'react';
 import NewItemForm from './NewItemForm';
 import ItemList from './ItemList';
+import ItemDetail from './ItemDetail';
 
 class ItemControl extends React.Component {
 
@@ -8,15 +9,23 @@ class ItemControl extends React.Component {
     super(props);
     this.state = {
       formVisibleOnPage: false,
-      mainItemList: []
+      mainItemList: [],
+      selectedItem: null
     };
     this.handleClick = this.handleClick.bind(this);
   } 
 
-  handleClick() {
-    this.setState(prevState => ({
-      formVisibleOnPage: !prevState.formVisibleOnPage
-    }));
+  handleClick = () => {
+    if (this.state.selectedItem != null) {
+      this.setState({
+        formVisibleOnPage: false,
+        selectedItem: null
+      });
+    } else {
+      this.setState(prevState => ({
+        formVisibleOnPage: !prevState.formVisibleOnPage,
+      }));
+    }
   }
 
   handleAddingNewItemToList = (newItem) => {
@@ -28,22 +37,23 @@ class ItemControl extends React.Component {
   }
 
   // *** BEGIN WIP READ ITEMDETAILS *** //
-  handleItemDetails = (id) => {
-    const newMainItemList = this.state.mainItemList.concat(id);
-    this.setState({
-      mainItemList: newMainItemList,
-      formVisibleOnPage: false
-    });
+  handleItemDetail = (id) => {
+    const selectedItem = this.state.mainItemList.filter(item => item.id === id)[0];
+    this.setState({selectedItem: selectedItem});
   }
   // *** END WIP READ ITEMDETAILS *** //
   
   render(){
     let currentlyVisibleState = null;
     let buttonText = null; // new code
-    if (this.state.formVisibleOnPage) {
+    if (this.state.selectedItem != null) {
+      currentlyVisibleState = <ItemDetail item = {this.state.selectedItem} />
+      buttonText = "Return to Item List";
+    }
+    else if (this.state.formVisibleOnPage) {
       currentlyVisibleState = <NewItemForm onNewItemCreation={this.handleAddingNewItemToList} />
         buttonText = "Return to Item List";
-      } else {
+    } else {
       currentlyVisibleState = <ItemList itemList={this.state.mainItemList} />;
       buttonText = "Add Item"
     }

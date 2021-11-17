@@ -20,7 +20,7 @@ function Item(props) {
   return (
     <React.Fragment>
       <h3>{props.name}</h3>
-      <button>Item Details</button>
+      <button onClick = {() => props.whenItemClicked(props.id)}>Item Details</button>
       <button>Delete Item</button>
       <hr/>
     </React.Fragment>
@@ -29,8 +29,10 @@ function Item(props) {
 
 Item.propTypes = {
   name: PropTypes.string.isRequired,
-  // quantity: PropTypes.number.isRequired,
-  // description: PropTypes.string
+  quantity: PropTypes.number.isRequired,
+  description: PropTypes.string,
+  id: PropTypes.string,
+  whenItemClicked: PropTypes.func
 };
 
 export default Item;

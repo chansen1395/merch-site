@@ -2,6 +2,8 @@ import React from 'react';
 import NewItemForm from './NewItemForm';
 import ItemList from './ItemList';
 import ItemDetail from './ItemDetail';
+import EditItemForm from './EditItemForm';
+
 
 class ItemControl extends React.Component {
 
@@ -10,16 +12,18 @@ class ItemControl extends React.Component {
     this.state = {
       formVisibleOnPage: false,
       mainItemList: [],
-      selectedItem: null
+      selectedItem: null,
+      editing: false
     };
     this.handleClick = this.handleClick.bind(this);
   } 
-
+  
   handleClick = () => {
     if (this.state.selectedItem != null) {
       this.setState({
         formVisibleOnPage: false,
-        selectedItem: null
+        selectedItem: null,
+        editing: false
       });
     } else {
       this.setState(prevState => ({
@@ -42,6 +46,10 @@ class ItemControl extends React.Component {
     this.setState({selectedItem: selectedItem});
   }
 
+  handleEditClick = () => {
+    this.setState({editing: true});
+  }
+
   handleDeletingItem = (id) => {
     const newMainItemList = this.state.mainItemList.filter(item => item.id !== id);
     this.setState({
@@ -49,22 +57,48 @@ class ItemControl extends React.Component {
       selectedItem: null
     });
   }
+
+  handleEditingItemInList = (itemToEdit) => {
+    const editedMainItemList = this.state.mainItemList
+      .filter(item => item.id !== this.state.selectedItem.id)
+      .concat(itemToEdit);
+    this.setState({
+        mainItemList: editedMainItemList,
+        editing: false,
+        selectedItem: null
+      });
+  }
   // *** END WIP READ ITEMDETAILS *** //
   
   render(){
     let currentlyVisibleState = null;
-    let buttonText = null; // new code
-    if (this.state.selectedItem != null) {
-      currentlyVisibleState = <ItemDetail item = {this.state.selectedItem} onClickingDelete = {this.handleDeletingItem} />
-      buttonText = "Return to Item List";
+    let buttonText = null;
+
+    if (this.state.editing ) {      
+      currentlyVisibleState = <EditItemForm 
+        item = {this.state.selectedItem}
+        onEditItem = {this.handleEditingItemInList} />
+      buttonText = "Stop Editing";
+
+    } else if (this.state.selectedItem != null) {
+      currentlyVisibleState = 
+      <ItemDetail 
+        item = {this.state.selectedItem} 
+        onClickingDelete = {this.handleDeletingItem} 
+        onClickingEdit = {this.handleEditClick} />      
+        
+        buttonText = "Return to Item List";
     }
+
     else if (this.state.formVisibleOnPage) {
       currentlyVisibleState = <NewItemForm onNewItemCreation={this.handleAddingNewItemToList} />
         buttonText = "Return to Item List";
+    
     } else {
       currentlyVisibleState = <ItemList itemList={this.state.mainItemList} onItemSelection={this.handleItemDetail}/>;
       buttonText = "Add Item"
     }
+
     return (
       <React.Fragment>
         {currentlyVisibleState}

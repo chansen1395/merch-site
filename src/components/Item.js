@@ -21,7 +21,6 @@ function Item(props) {
     <React.Fragment>
       <h3>{props.name}</h3>
       <button onClick = {() => props.whenItemClicked(props.id)}>Item Details</button>
-      <button>Delete Item</button>
       <hr/>
     </React.Fragment>
   );

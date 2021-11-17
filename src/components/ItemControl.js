@@ -41,20 +41,28 @@ class ItemControl extends React.Component {
     const selectedItem = this.state.mainItemList.filter(item => item.id === id)[0];
     this.setState({selectedItem: selectedItem});
   }
+
+  handleDeletingItem = (id) => {
+    const newMainItemList = this.state.mainItemList.filter(item => item.id !== id);
+    this.setState({
+      mainItemList: newMainItemList,
+      selectedItem: null
+    });
+  }
   // *** END WIP READ ITEMDETAILS *** //
   
   render(){
     let currentlyVisibleState = null;
     let buttonText = null; // new code
     if (this.state.selectedItem != null) {
-      currentlyVisibleState = <ItemDetail item = {this.state.selectedItem} />
+      currentlyVisibleState = <ItemDetail item = {this.state.selectedItem} onClickingDelete = {this.handleDeletingItem} />
       buttonText = "Return to Item List";
     }
     else if (this.state.formVisibleOnPage) {
       currentlyVisibleState = <NewItemForm onNewItemCreation={this.handleAddingNewItemToList} />
         buttonText = "Return to Item List";
     } else {
-      currentlyVisibleState = <ItemList itemList={this.state.mainItemList} />;
+      currentlyVisibleState = <ItemList itemList={this.state.mainItemList} onItemSelection={this.handleItemDetail}/>;
       buttonText = "Add Item"
     }
     return (

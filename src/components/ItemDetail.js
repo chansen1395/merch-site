@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 function ItemDetail(props){
-  const { item } = props;
+  const { item, onClickingDelete } = props;
 
   return (
     <React.Fragment>

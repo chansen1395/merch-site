@@ -27,6 +27,16 @@ class ItemControl extends React.Component {
     });
   }
 
+  // *** BEGIN WIP READ ITEMDETAILS *** //
+  handleItemDetails = (id) => {
+    const newMainItemList = this.state.mainItemList.concat(id);
+    this.setState({
+      mainItemList: newMainItemList,
+      formVisibleOnPage: false
+    });
+  }
+  // *** END WIP READ ITEMDETAILS *** //
+  
   render(){
     let currentlyVisibleState = null;
     let buttonText = null; // new code

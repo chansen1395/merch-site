@@ -68,19 +68,30 @@ class ItemControl extends React.Component {
     });
   }
   
-  // *** BEGIN WIP READ INVENTORY CHANGES *** //
-  handleSellItem = (id) => {
-    let sellItem = this.state.mainItemList.filter(item => item.id !== this.state.selectedItem.id);
+  handleBuyItem = () => {
+  
+    let buyItem = this.state.mainItemList.filter(item => item.id === this.state.selectedItem.id)[0];
 
-    // test sellitem
-    console.log(sellItem.item.quanity);
-    sellItem = sellItem.item.quanity--;
+    if (buyItem.quantity <= 0){
+      alert(buyItem.name + " is out of stock. Please restock or choose another item.");
+    } else {
+    buyItem = buyItem.quantity--;
 
-    // test sellitem
-    console.log(sellItem.item.quanity);
     this.setState({
-        mainItemList: sellItem
-      });
+      buyItem: buyItem
+    });
+    }
+  }
+
+  handleRestockItem = () => {
+  
+    let restockItem = this.state.mainItemList.filter(item => item.id === this.state.selectedItem.id)[0];
+
+    restockItem = restockItem.quantity++;
+
+    this.setState({
+      restockItem: restockItem
+    });
   }
   // *** END WIP READ INVENTORY CHANGES *** //
   
@@ -100,7 +111,8 @@ class ItemControl extends React.Component {
         item = {this.state.selectedItem} 
         onClickingDelete = {this.handleDeletingItem} 
         onClickingEdit = {this.handleEditClick}      
-        onClickingSell = {this.handleSellClick} />      
+        onClickingBuy = {this.handleBuyItem}      
+        onClickingRestock = {this.handleRestockItem} />      
         
         buttonText = "Return to Item List";
     }

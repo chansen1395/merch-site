@@ -11,7 +11,7 @@ function ItemList(props) { // Add props as parameter.
         <Item
           whenItemClicked = { props.onItemSelection }
           name={item.name}
-          quantitity={item.quantitity}
+          quantity={item.quantity}
           description={item.description}
           id={item.id} 
           key={item.id} />

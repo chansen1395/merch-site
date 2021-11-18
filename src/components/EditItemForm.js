@@ -10,10 +10,12 @@ function EditItemForm (props) {
     event.preventDefault();
     props.onEditItem({
       name: event.target.name.value, 
-      quantity: event.target.quantity.value, 
+      quantity: event.target.quantity.valueAsNumber, 
       description: event.target.description.value, 
       id: item.id});
   }
+
+  
 
   return (
     <React.Fragment>

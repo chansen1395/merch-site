@@ -40,16 +40,15 @@ class ItemControl extends React.Component {
     });
   }
 
-  // *** BEGIN WIP READ ITEMDETAILS *** //
   handleItemDetail = (id) => {
     const selectedItem = this.state.mainItemList.filter(item => item.id === id)[0];
     this.setState({selectedItem: selectedItem});
   }
-
+  
   handleEditClick = () => {
     this.setState({editing: true});
   }
-
+  
   handleDeletingItem = (id) => {
     const newMainItemList = this.state.mainItemList.filter(item => item.id !== id);
     this.setState({
@@ -57,18 +56,33 @@ class ItemControl extends React.Component {
       selectedItem: null
     });
   }
-
+  
   handleEditingItemInList = (itemToEdit) => {
     const editedMainItemList = this.state.mainItemList
-      .filter(item => item.id !== this.state.selectedItem.id)
-      .concat(itemToEdit);
+    .filter(item => item.id !== this.state.selectedItem.id)
+    .concat(itemToEdit);
     this.setState({
-        mainItemList: editedMainItemList,
-        editing: false,
-        selectedItem: null
+      mainItemList: editedMainItemList,
+      editing: false,
+      selectedItem: null
+    });
+  }
+  
+  // *** BEGIN WIP READ INVENTORY CHANGES *** //
+  handleSellItem = (id) => {
+    let sellItem = this.state.mainItemList.filter(item => item.id !== this.state.selectedItem.id);
+
+    // test sellitem
+    console.log(sellItem.item.quanity);
+    sellItem = sellItem.item.quanity--;
+
+    // test sellitem
+    console.log(sellItem.item.quanity);
+    this.setState({
+        mainItemList: sellItem
       });
   }
-  // *** END WIP READ ITEMDETAILS *** //
+  // *** END WIP READ INVENTORY CHANGES *** //
   
   render(){
     let currentlyVisibleState = null;
@@ -85,7 +99,8 @@ class ItemControl extends React.Component {
       <ItemDetail 
         item = {this.state.selectedItem} 
         onClickingDelete = {this.handleDeletingItem} 
-        onClickingEdit = {this.handleEditClick} />      
+        onClickingEdit = {this.handleEditClick}      
+        onClickingSell = {this.handleSellClick} />      
         
         buttonText = "Return to Item List";
     }
